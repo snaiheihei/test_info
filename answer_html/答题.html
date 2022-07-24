@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		.box{
+			position: relative;
+			background-color: #E5F6EF;
+			width: 485px;
+			height: 308px; 
+			margin: 100px auto;
+			border: 1px solid #c8dcf2;
+			font-family: "microsoft yahei"
+		}
+		.box h2{
+			margin:  0px;
+			padding: 0px;
+			border-bottom:  1px solid lightgray;
+			text-indent: 40px;
+			font-weight: normal;
+		}
+		.box label{
+			margin: 40px auto;
+			display: block;
+			width: 300px;
+			height: 90px;
+			/*resize: none;*/
+			background: white;
+			text-align: center;
+			line-height: 90px;
+			font-size: 50px;
+		}
+		.box button{
+			display: block;
+			margin: auto;
+			padding: 0px;
+			width: 100px;
+			height: 30px;
+			line-height: 26px;
+			font-size: 20px;
+		}
+		.box button:hover{
+			background-color: lightyellow;
+			cursor: pointer;
+			outline: none;
+		}
+		.box p{
+			margin: 40px auto;
+			text-align: center;
+		}
+		.box .title{
+			float: left;
+			width: 100px;
+			height: 30px;
+		}
+		.angle{
+			height: 120px;
+			width: 120px;
+			position: absolute;
+			top:50px;
+			display:none;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		
+		<h2>顶测软件测试-0713班
+			<img class="title" src="title.png" >
+		</h2>
+		<img src="./angle.gif" class="angle">
+		<label>幸运儿</label>
+		<button class="btn">开始</button>
+		<p>
+			<span>Copyright(c)</span>
+			<span class="date">日期</span>
+			<span class="h">h</span><span class="m">m</span><span class="s">s</span>
+		</p>
+
+	</div>
+
+	<script>
+		function getDate(){
+			var date = new Date()
+			var  year = date.getFullYear();
+			var month = date.getMonth() + 1;
+			var dates = date.getDate();
+			var arr = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']
+			var day = date.getDay()
+			return year + '年' + month + '月' + dates + '日  ' + arr[day]
+		}
+		var el_date = document.querySelector('.date')
+		el_date.innerHTML = getDate()
+		var el_h = document.querySelector('.h')
+		var el_m = document.querySelector('.m')
+		var el_s = document.querySelector('.s')
+		// 开启定时器
+		getTime() //先调用一次，防止第一次刷新页面空白
+		setInterval(getTime,1000)
+		function getTime(){
+			var date = new Date();
+			var h = date.getHours();
+			h = h <10 ? '0' + h : h;
+			el_h.innerHTML = h+':'
+			var m = date.getMinutes();
+			m = m <10 ? '0' + m : m;
+			el_m.innerHTML = m + ':'
+			var s = date.getSeconds();
+			s = s <10 ? '0' + s : s;
+			el_s.innerHTML = s 
+		}
+
+		// 随机答题功能
+		var arr_stu = ['王浩','李小霞','郑加俊','孙孝磊','钟伟奇','崔长青','崔腾飞','刘丽丽','闫东东','张建','冯冠军','马聪','张鑫','刘桐','任建琴','刘霞','王旭','周义祥','王天成','杭振旭','刘逸飞','孟显峰','白利国','刘思洋','解美','张旭东','王洁','赵佳旺','郑宇卓','苗天宇','宋宇','郭征','孙圣','潘振胜','高福利']
+		
+		function getRandom(max,min){
+			return Math.floor(Math.random()*(max - min + 1) + min)
+		}
+		var el_btn = document.querySelector('.btn')
+		var el_label = document.querySelector('label')
+		var angle_img = document.querySelector('.angle')
+
+		el_btn.onclick = function(){
+			
+			el_btn.disabled = true;
+			el_btn.style.color = 'lightgray'
+			el_btn.innerHTML = '等待'
+			angle_img.style.display = 'inline-block'
+			console.log(arr_stu.length)
+
+			var num = 10;
+			var timer = setInterval(function(){
+				getRandom(0,arr_stu.length)
+				el_label.innerHTML = arr_stu[getRandom(0,arr_stu.length)]
+				if(num == 0){
+					el_btn.disabled = false;
+					el_btn.style.color = 'black'
+					el_btn.innerHTML = '开始'
+					clearInterval(timer)
+					angle_img.style.display = 'none'
+					// 避免重复答题
+					var index = arr_stu.indexOf(el_label.innerHTML)
+					arr_stu.splice(index,1)
+					console.log(arr_stu)
+				}
+				num--;
+			},120)
+			
+		}
+
+	</script>
+	
+</body>
+</html>
